@@ -98,3 +98,61 @@ CREATE TABLE IF NOT EXISTS `t_user` (
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
+
+
+
+/*Sequel ACE 쿼리문*/
+-- 테이블 dev.t_category 구조 내보내기
+CREATE TABLE IF NOT EXISTS t_category (
+	id int(11) NOT NULL,
+  	category1 varchar(50) NOT NULL,
+  	category2 varchar(50) NOT NULL,
+  	category3 varchar(50),
+  	PRIMARY KEY (id)
+) ;
+
+-- 테이블 dev.t_seller 구조 내보내기
+CREATE TABLE IF NOT EXISTS t_seller (
+  id int(11) NOT NULL,
+  name varchar(50) NOT NULL,
+  email varchar(100) NOT NULL,
+  phone varchar(12) NOT NULL,
+  PRIMARY KEY (id)
+) ;
+
+-- 테이블 dev.t_user 구조 내보내기
+CREATE TABLE IF NOT EXISTS t_user (
+  email varchar(50) NOT NULL,
+  type int(1) NOT NULL,
+  PRIMARY KEY (email)
+);
+
+-- 테이블 dev.t_product 구조 내보내기
+CREATE TABLE IF NOT EXISTS t_product (
+  id int(11) NOT NULL,
+  product_name varchar(200) DEFAULT NULL,
+  product_price int(11) NOT NULL DEFAULT 0,
+  delivery_price int(11) NOT NULL DEFAULT 0,
+  add_delivery int(11) NOT NULL DEFAULT 0,
+  tags varchar(100) DEFAULT NULL,
+  outbound_days int(2) DEFAULT 5,
+  created_date datetime NOT NULL DEFAULT current_timestamp(),
+  seller_id int(11) NOT NULL,
+  category_id int(11) NOT NULL,
+  PRIMARY KEY (id),
+  KEY FK_t_product_t_seller (seller_id),
+  KEY FK_t_product_t_category (category_id),
+  CONSTRAINT FK_t_product_t_category FOREIGN KEY (category_id) REFERENCES t_category (id) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT FK_t_product_t_seller FOREIGN KEY (seller_id) REFERENCES t_seller (id) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ;
+
+-- 테이블 dev.t_image 구조 내보내기
+CREATE TABLE IF NOT EXISTS t_image (
+  id int(11) NOT NULL,
+  product_id int(11) NOT NULL,
+  type int(1) NOT NULL DEFAULT 1,
+  path varchar(150) NOT NULL,
+  PRIMARY KEY (id),
+  KEY FK_t_image_t_product (product_id),
+  CONSTRAINT FK_t_image_t_product FOREIGN KEY (product_id) REFERENCES t_product (id) ON DELETE NO ACTION ON UPDATE NO ACTION
+);
