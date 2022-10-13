@@ -1,8 +1,9 @@
 <template>
+  <div>
     <!--네비게이션 Start-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">SoldOut</a>
+          <a class="navbar-brand" href="/">SoldOut</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -17,9 +18,15 @@
               <li class="nav-item">
                 <router-link class="nav-link" to="detail">Detail</router-link>
               </li>
-              <li class="nav-item">
+              <li v-if="user.email!=undefined" class="nav-item">
                 <router-link class="nav-link" to="create">Registration</router-link>
               </li>              
+              <li v-if="user.email==undefined">
+                <button class="btn btn-danger" type="button" @click="kakaoLogin">Login</button>
+              </li>
+              <li v-else>
+                <button class="btn btn-danger" type="button" @click="kakaoLogout">LogOut</button>
+              </li>
             </ul>
             <form class="d-flex">
               <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -30,7 +37,103 @@
       </nav>
       <!--네비게이션 End-->
   <router-view/>
+      <!--footer Start-->
+      <footer class="mt-5 py-5 bg-dark">
+        <div class="row">
+          <div class="col-12 col-md">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="d-block mb-2" role="img" viewBox="0 0 24 24"><title>Product</title><circle cx="12" cy="12" r="10"/><path d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83m13.79-4l-5.74 9.94"/></svg>
+            <small class="d-block mb-3 text-muted">&copy; 2017–2021</small>
+          </div>
+          <div class="col-6 col-md">
+            <h5>Features</h5>
+            <ul class="list-unstyled text-small">
+              <li><a class="link-secondary" href="#">Cool stuff</a></li>
+              <li><a class="link-secondary" href="#">Random feature</a></li>
+              <li><a class="link-secondary" href="#">Team feature</a></li>
+              <li><a class="link-secondary" href="#">Stuff for developers</a></li>
+              <li><a class="link-secondary" href="#">Another one</a></li>
+              <li><a class="link-secondary" href="#">Last time</a></li>
+            </ul>
+          </div>
+          <div class="col-6 col-md">
+            <h5>Resources</h5>
+            <ul class="list-unstyled text-small">
+              <li><a class="link-secondary" href="#">Resource name</a></li>
+              <li><a class="link-secondary" href="#">Resource</a></li>
+              <li><a class="link-secondary" href="#">Another resource</a></li>
+              <li><a class="link-secondary" href="#">Final resource</a></li>
+            </ul>
+          </div>
+          <div class="col-6 col-md">
+            <h5>Resources</h5>
+            <ul class="list-unstyled text-small">
+              <li><a class="link-secondary" href="#">Business</a></li>
+              <li><a class="link-secondary" href="#">Education</a></li>
+              <li><a class="link-secondary" href="#">Government</a></li>
+              <li><a class="link-secondary" href="#">Gaming</a></li>
+            </ul>
+          </div>
+          <div class="col-6 col-md">
+            <h5>About</h5>
+            <ul class="list-unstyled text-small">
+              <li><a class="link-secondary" href="#">Team</a></li>
+              <li><a class="link-secondary" href="#">Locations</a></li>
+              <li><a class="link-secondary" href="#">Privacy</a></li>
+              <li><a class="link-secondary" href="#">Terms</a></li>
+            </ul>
+          </div>
+        </div>
+      </footer>
+      <!--footer End-->
+  </div>
 </template>
+
+<script>
+  export default {
+    computed: {
+      user() {
+        return this.$store.state.user;
+      }
+    },
+    methods: {
+      kakaoLogin() {
+        window.Kakao.Auth.login({
+          scope:'profile_nickname,profile_image,account_email,gender',
+          success: this.getProfile
+        });
+      },
+      getProfile(authObj){
+        console.log("authObj : " + authObj);
+        window.Kakao.API.request({
+          url:'/v2/user/me',
+          success: res => {
+            const kakao_account = res.kakao_account;
+            console.log(kakao_account);
+            this.login(kakao_account);
+            alert("로그인 성공!");
+          }
+        });
+      },
+      async login(kakao_account) {
+        await this.$api("/api/login",{
+          param: [
+            {email:kakao_account.email, nickname:kakao_account.profile.nickname},
+            {nickname:kakao_account.profile.nickname}
+          ]
+        });
+
+        this.$store.commit("user", kakao_account);
+      },
+      kakaoLogout() {
+        window.Kakao.Auth.logout((response) => {
+          console.log(response);
+          this.$store.commit("user",{});
+          alert("로그아웃!");
+        });
+      }
+    }
+  }
+</script>
 
 <style>
 #app {

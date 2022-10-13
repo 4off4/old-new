@@ -29,9 +29,8 @@ module.exports = {
                 AND	t2.type = 3
                 AND	t1.category_id = t3.id`
     },
-    //메인이미지 여러건 나오는
+    //메인이미지 다건 나오는
     productMainImages: {
-
         query: `SELECT * FROM t_image WHERE product_id = ? AND type = 2`
     },
 
@@ -47,6 +46,10 @@ module.exports = {
 
     sellerList : {
         query: `select * from t_seller`
+    },
+    
+    signUp: {
+        query: `INSERT INTO t_user SET ? ON DUPLICATE KEY UPDATE ?`
     }
     
 }

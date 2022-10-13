@@ -1,3 +1,4 @@
+const e = require('express');
 const { request } = require('express');
 const express = require('express');
 const app = express();
@@ -10,10 +11,15 @@ app.use(session({
     secret: 'secret code',      //session에 대한 key
     resave: false,              //request 요청이 왔을 때 session에 수정 사항이 생기지 않더라도 session을 다시 저장할지 여부
     saveUninitialized: false,   //session에 저장 할 내역이 없더라도 session을 항상 재저장할지 여부
-    cookie:{
+    cookie: {
         secure: false,          //false로 해야 session에 값이 넘어가고 뭐 이렇게 되나봄
         maxAge: 1000 * 60 * 60  //쿠키 유효시간 1시간
     }
+}));
+
+//데이터 받는거
+app.use(express.json({
+    limit: '50mb'
 }));
 
 const server = app.listen(3000, () => {
@@ -37,11 +43,24 @@ const db = {
     password: "mariadb"
 };
 
-const dbpool = require('mysql').createPool(db);
+const dbPool = require('mysql').createPool(db);
 
 app.post('/api/login', async (request, res) => {
-    request.session['email'] = '4off4@naver.com';
-    res.send('OK');
+    // request.session['email'] = '4off4@naver.com';
+    // res.send('OK');
+    try {
+        await req.db('signUp', request.body.param);
+        if(request.body.param.length > 0) {
+            for(let key in request.body.param[0]) request.session[key] = request.body.param[0][key];
+            res.send(request.body.param[0])
+        }else{
+            res.send({error:"Please Try Again or contact system Manager!"});
+        }
+    }catch(err) {
+        res.send({
+            error: "DB Access Error"
+        });
+    }
 });
 
 app.post('/api/logout', async (request, res) => {
@@ -51,7 +70,7 @@ app.post('/api/logout', async (request, res) => {
 
 
 //:alias 위에 post로 login, logout 지정해놓은 것이 아닌 다른 key로 들어올 때 다 이걸 타는것이다
-app.post('/api/:alias', async (request, res) => {
+app.post('/apirole/:alias', async (request, res) => {
     if(!request.session.email) {
         return res.status(401).send({
             error:'You need to Login.'
@@ -60,6 +79,17 @@ app.post('/api/:alias', async (request, res) => {
 
     try {
         res.send(await req.db(request.params.alias));
+    } catch(err) {
+        res.status(500).send({
+            error: err
+        });
+    }
+});
+
+//:alias DB 연결부
+app.post('/api/:alias', async (request, res) => {
+    try {
+        res.send(await req.db(request.params.alias, request.body.param));
     } catch(err) {
         res.status(500).send({
             error: err

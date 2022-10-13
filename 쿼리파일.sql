@@ -86,8 +86,8 @@ SELECT * FROM t_image
 WHERE product_id = 1 AND type = 2
 
 /*insert 제품등록 */
-INSERT INTO t_product (product_name, product_price, delivery_price, add_delivery, tags, outbound_days, seller_id, category_id)
-VALUES ("TEST PRODUCT2", 70000, 2500, 2500, "TEST", 5, 1,1)
+INSERT INTO t_product (id,product_name, product_price, delivery_price, add_delivery, tags, outbound_days, seller_id, category_id)
+VALUES (6,"TEST PRODUCT2", 70000, 2500, 2500, "TEST", 5, 1,1)
 
 
 SELECT * FROM t_product
