@@ -16,10 +16,10 @@
                 <router-link class="nav-link active" to="/">List</router-link>
               </li>
               <li class="nav-item">
-                <router-link class="nav-link" to="detail">Detail</router-link>
+                <router-link class="nav-link" to="/detail">Detail</router-link>
               </li>
               <li v-if="user.email!=undefined" class="nav-item">
-                <router-link class="nav-link" to="create">Registration</router-link>
+                <router-link class="nav-link" to="/sales">Registration</router-link>
               </li>              
               <li v-if="user.email==undefined">
                 <button class="btn btn-danger" type="button" @click="kakaoLogin">Login</button>

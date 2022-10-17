@@ -2,6 +2,7 @@
 npm install vuex@next --save; */
 
 import {createStore} from 'vuex'
+import persistedstate from 'vuex-persistedstate'; 
 
 const store = createStore({
     state() {
@@ -13,7 +14,13 @@ const store = createStore({
         user(state, data) {
             state.user = data;
         }
-    }
+    },
+    //카카오 자동 로그인이 지속(리프레쉬)
+    plugins: [
+        persistedstate({
+            paths:['user']
+        })
+    ]
 });
 
 export default store;

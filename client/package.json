@@ -13,9 +13,12 @@
     "core-js": "^3.8.3",
     "jquery": "^3.6.1",
     "popper.js": "^1.16.1",
+    "sweetalert2": "^11.5.2",
     "vue": "^3.2.36",
     "vue-router": "^4.0.3",
-    "vuex": "^4.0.2"
+    "vue-sweetalert2": "^5.0.5",
+    "vuex": "^4.0.2",
+    "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

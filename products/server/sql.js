@@ -13,6 +13,14 @@ module.exports = {
                 AND	t2.type = 1
                 AND	t1.category_id = t3.id`
     },
+    //제품판매 리스트2
+    productList2 : {
+        query: `SELECT t3.*, t4.path FROM (SELECT t1.*, t2.category1, t2.category2, t2.category3
+            FROM t_product t1, t_category t2
+            WHERE t1.category_id = t2.id) t3
+            left join (SELECT * FROM t_image WHERE type=1) t4
+            on t3.id = t4.product_id`
+    },
     /*상세 페이지*/
     //조회
     productDetail: {
@@ -43,7 +51,9 @@ module.exports = {
         query: `INSERT INTO t_image (product_id, type, path)
         VALUES (?,?,?)`
     },
-
+    productDelete: {
+        query: `DELETE FROM t_product WHERE id=?`
+    },
     sellerList : {
         query: `select * from t_seller`
     },
