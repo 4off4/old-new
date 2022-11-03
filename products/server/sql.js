@@ -42,10 +42,9 @@ module.exports = {
         query: `SELECT * FROM t_image WHERE product_id = ? AND type = 2`
     },
 
-    /*제품등록*/
+    /*제품등록 set ?를 쓰면 키-value가 알아서 들어감*/
     productInsert: {
-        query: `INSERT INTO t_product (product_name, product_price, delivery_price, add_delivery, tags, outbound_days, seller_id, category_id)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+        query: `INSERT INTO t_product set ?`
     },
     productImageInsert: {
         query: `INSERT INTO t_image (product_id, type, path)
@@ -57,7 +56,9 @@ module.exports = {
     sellerList : {
         query: `select * from t_seller`
     },
-    
+    categoryList : {
+        query: `select * from t_category`
+    },
     signUp: {
         query: `INSERT INTO t_user SET ? ON DUPLICATE KEY UPDATE ?`
     }
