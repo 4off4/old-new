@@ -15,10 +15,7 @@
               <li class="nav-item">
                 <router-link class="nav-link active" to="/">List</router-link>
               </li>
-              <li class="nav-item">
-                <router-link class="nav-link" to="/detail">Detail</router-link>
-              </li>
-              <li v-if="user.email!=undefined" class="nav-item">
+              <li v-if="user.email=='hbg199@naver.com'" class="nav-item">
                 <router-link class="nav-link" to="/sales">Registration</router-link>
               </li>              
               <li v-if="user.email==undefined">

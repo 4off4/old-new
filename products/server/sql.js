@@ -39,7 +39,7 @@ module.exports = {
     },
     //메인이미지 다건 나오는
     productMainImages: {
-        query: `SELECT * FROM t_image WHERE product_id = ? AND type = 2`
+        query: `SELECT * FROM t_image WHERE product_id = ?`
     },
 
     /*제품등록 set ?를 쓰면 키-value가 알아서 들어감*/
@@ -47,9 +47,17 @@ module.exports = {
         query: `INSERT INTO t_product set ?`
     },
     productImageInsert: {
-        query: `INSERT INTO t_image (product_id, type, path)
-        VALUES (?,?,?)`
+        query: `INSERT INTO t_image set ?`
     },
+    imageList: {
+        query: `select * from t_image where product_id=?`
+    },
+    imageListMaxId: {
+        query: `SELECT max(id) as id FROM t_image`
+    },
+    imageDelete: {
+        query: `delete from t_image where id=?`
+    },    
     productDelete: {
         query: `DELETE FROM t_product WHERE id=?`
     },

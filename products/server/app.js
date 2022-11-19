@@ -68,6 +68,55 @@ app.post('/api/logout', async (request, res) => {
     res.send('Ok');
 });
 
+/* 이미지업로드 */
+app.post('/upload/:productId/:type/:fileName/:imageMaxId', async (request, res) => {
+    let {
+        productId,
+        type,
+        fileName,
+        imageMaxId
+    } = request.params;
+    const dir = `${__dirname}/uploads/${productId}`;
+    const file = `${dir}/${fileName}`;
+    if (!request.body.data) return fs.unlink(file, async (err) => res.send({
+      err
+    }));
+    const imageMaxIdAdd = imageMaxId++;
+    console.log("imageMaxId app.js :" + imageMaxId);
+    const data = request.body.data.slice(request.body.data.indexOf(';base64,') + 8);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir);
+    fs.writeFile(file, data, 'base64', async (error) => {
+        console.log("이미지 업로드 중");
+      await req.db('productImageInsert', [{
+        id: imageMaxId,
+        product_id: productId,
+        type: type,
+        path: fileName
+      }]);
+  
+      if (error) {
+        res.send({
+          error
+        });
+      } else {
+        res.send("ok");
+      }
+    });
+  });
+  
+  app.get('/download/:productId/:fileName/:imageMaxId', (request, res) => {
+    const {
+      productId,
+      type,
+      fileName
+    } = request.params;
+    const filepath = `${__dirname}/uploads/${productId}/${fileName}`;
+    res.header('Content-Type', `image/${fileName.substring(fileName.lastIndexOf("."))}`);
+    if (!fs.existsSync(filepath)) res.send(404, {
+      error: 'Can not found file.'
+    });
+    else fs.createReadStream(filepath).pipe(res);
+  });
 
 //:alias 위에 post로 login, logout 지정해놓은 것이 아닌 다른 key로 들어올 때 다 이걸 타는것이다
 app.post('/apirole/:alias', async (request, res) => {

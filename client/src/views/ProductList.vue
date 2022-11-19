@@ -16,7 +16,7 @@
                 <div class="col-xl-3 col-lg-4 col-md-6" :key="i" v-for="(product,i) in productList">
                     <div class="card" style="width: 18rem;">
                         <a @click="goToDetail(product.id);" style="cursor:pointer">
-                            <img :src="product.path" class="card-img-top" alt="...">
+                            <img :src="`/download/${product.id}/${product.path}/0`" class="img-fluid"/>
                         </a>
                         <div class="card-body">
                             <h5 class="card-title">{{product.product_name}}</h5>
@@ -57,6 +57,7 @@ export default {
         },
         goToDetail(id) {
             this.$router.push({path:'detail', query:{id:id}});
+            console.log("id가무어시냐? " + id);
         }
     }
 }

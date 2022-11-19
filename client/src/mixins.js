@@ -12,6 +12,13 @@ export default {
                 console.log(e);
             })).data;
         },
+        $base64(file) { //업로드 파일 String 형태로 바꿈
+            return new Promise(resolve => {
+              var a = new FileReader();
+              a.onload = e => resolve(e.target.result);
+              a.readAsDataURL(file);
+            });
+        },        
         $currencyFormat(value, format='#,###') {  //숫자에 , 붙이는 포맷
             if(value == 0 || value == null) return 0;
             
