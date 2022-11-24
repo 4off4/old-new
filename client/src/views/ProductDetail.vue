@@ -67,7 +67,7 @@
                                     <button type="button" class="btn btn-lg btn-dark">Cart</button>
                                 </div>
                                 <div class="col-6 d-grid p-1">
-                                    <button type="button" class="btn btn-lg btn-danger">Buy</button>
+                                    <button type="button" class="btn btn-lg btn-danger" @click="goTobuyCart">Buy</button>
                                 </div>
                             </div>
                         </div>
@@ -126,9 +126,12 @@ export default {
             // }
           }
       },
-        async getProductImage() {
-            this.productImage = await this.$api("/api/productMainImages",{param:[this.id]});
-        }
+      async getProductImage() {
+        this.productImage = await this.$api("/api/productMainImages",{param:[this.id]});
+      }, 
+      goTobuyCart() {
+        this.$router.push({path:'/cart'});
+      }
     }
 }
 </script>

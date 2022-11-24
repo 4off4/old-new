@@ -18,16 +18,17 @@
               <li v-if="user.email=='hbg199@naver.com'" class="nav-item">
                 <router-link class="nav-link" to="/sales">Registration</router-link>
               </li>              
-              <li v-if="user.email==undefined">
-                <button class="btn btn-danger" type="button" @click="kakaoLogin">Login</button>
-              </li>
-              <li v-else>
-                <button class="btn btn-danger" type="button" @click="kakaoLogout">LogOut</button>
-              </li>
             </ul>
             <form class="d-flex">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
+              <li v-if="user.email==undefined">
+                <button class="btn btn-danger me-2" type="button" @click="kakaoLogin">Login</button>
+              </li>
+              <li v-else>
+                <button class="btn btn-danger me-2" type="button" @click="kakaoLogout">LogOut</button>
+                <button class="btn btn-outline-success" type="button" @click="goTobuyCart()">cart</button>
+              </li>
+              <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success me-2" type="submit">Search</button> -->
             </form>
           </div>
         </div>
@@ -118,7 +119,6 @@
             {nickname:kakao_account.profile.nickname}
           ]
         });
-
         this.$store.commit("user", kakao_account);
       },
       kakaoLogout() {
@@ -127,6 +127,9 @@
           this.$store.commit("user",{});
           alert("로그아웃!");
         });
+      },
+      goTobuyCart(){
+        this.$router.push({path:'/cart'});
       }
     }
   }

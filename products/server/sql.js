@@ -69,6 +69,15 @@ module.exports = {
     },
     signUp: {
         query: `INSERT INTO t_user SET ? ON DUPLICATE KEY UPDATE ?`
-    }
+    },
+    cartInsert: {
+        query: `INSERT INTO t_cart SET product_id = ?, product_name = ?, product_price = ?, delivery_price =?, buyer_id =?, category_id = ?, tags = ?, path = ?`
+    },
+    cartList: {
+        query: `SELECT * FROM t_cart WHERE buyer_id = ?`
+    },
+    cartListDelete: {
+        query: `DELETE FROM t_cart WHERE buyer_id = ? AND product_id=?`
+    },
     
 }

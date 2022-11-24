@@ -85,7 +85,7 @@
   </main>
 </template>
 <script>
-  export default {
+export default {
     data(){
         return {
             product: {
@@ -231,5 +231,5 @@
             });
         }
     },
-  }
+}
 </script>

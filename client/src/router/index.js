@@ -5,8 +5,9 @@ import ProductCreate from '../views/ProductCreate.vue'
 import SalesList from '../views/SalesList.vue'
 import ImageInsert from '../views/ImageInsert.vue'
 import ProductUpdate from '../views/ProductUpdate.vue'
-
-
+import buyCart from '../views/buyCart.vue'
+import orderDetail from '../views/orderDetail.vue'
+import zipCode from '../views/zipCode.vue'
 const routes = [
   {
     path: '/',
@@ -37,6 +38,21 @@ const routes = [
     path: '/update',
     name: 'ProductUpdate',
     component: ProductUpdate
+  },
+  {
+    path: '/cart',
+    name: 'buyCart',
+    component: buyCart
+  },
+  {
+    path: '/orderDetail',
+    name: 'orderDetail',
+    component: orderDetail
+  },
+  {
+    path: '/zipCode',
+    name: 'zipCode',
+    component: zipCode
   }
 ]
 

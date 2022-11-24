@@ -72,7 +72,7 @@ export default {
                 }).then(async(result) => {
                 if (result.isConfirmed) {
                     console.log(id);
-                    await this.$api("/api/productInsert",{param:[id]});
+                    await this.$api("/api/productDelete",{param:[id]});
                     this.getProductList();
                     this.$swal.fire('Delete!', '', 'success')
                 }
