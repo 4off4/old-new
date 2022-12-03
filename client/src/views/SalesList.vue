@@ -64,18 +64,12 @@ export default {
     methods: {
         async getProductList() {
            this.productList = await this.$api("/api/productList2",{});
-           console.log(this.productList);
         },
         goToInsert() {
             this.$router.push({path:'/create'});
         },
         goToUpdate(id) {
             this.$router.push({path:'/update', query:{id:id}});
-            // if(this.productList.path != null) {
-            //     this.$router.push({path:'/update', query:{id:id}});
-            // }else {
-            //     this.$swal.fire('Please Update Image First', '', 'error');
-            // }
         },
         goToDetail(id) {
             this.$router.push({path:'/detail', query:{id:id}});
@@ -91,7 +85,6 @@ export default {
                 cancelButtonText: `Cancel`,
                 }).then(async(result) => {
                 if (result.isConfirmed) {
-                    console.log(id);
                     await this.$api("/api/productDelete",{param:[id]});
                     this.getProductList();
                     this.$swal.fire('Delete!', '', 'success')

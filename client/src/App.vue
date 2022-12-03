@@ -74,7 +74,7 @@
       }
     },
     created() {
-      console.log(this.$store.state.user.email);
+      //console.log(this.$store.state.user.email);
     },
     methods: {
       kakaoLogin() {

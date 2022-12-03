@@ -62,6 +62,11 @@ const routes = [
     component: orderDetail
   },
   {
+    path: '/orderDetail/:productid',
+    name: 'orderDetail3',
+    component: orderDetail
+  },  
+  {
     path: '/zipCode',
     name: 'zipCode',
     component: zipCode

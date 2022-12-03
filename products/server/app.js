@@ -81,26 +81,25 @@ app.post('/upload/:productId/:type/:fileName/:imageMaxId', async (request, res) 
     if (!request.body.data) return fs.unlink(file, async (err) => res.send({
       err
     }));
-    const imageMaxIdAdd = imageMaxId++;
-    console.log("imageMaxId app.js :" + imageMaxId);
     const data = request.body.data.slice(request.body.data.indexOf(';base64,') + 8);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir);
     fs.writeFile(file, data, 'base64', async (error) => {
         console.log("이미지 업로드 중");
-      await req.db('productImageInsert', [{
-        id: imageMaxId,
-        product_id: productId,
-        type: type,
-        path: fileName
-      }]);
+        console.log("imageMaxId : " + imageMaxId);
+        await req.db('productImageInsert', [{
+            id: imageMaxId,
+            product_id: productId,
+            type: type,
+            path: fileName
+        }]);
   
-      if (error) {
-        res.send({
-          error
-        });
-      } else {
-        res.send("ok");
-      }
+        if (error) {
+            res.send({
+            error
+            });
+        } else {
+            res.send("ok");
+        }
     });
   });
   

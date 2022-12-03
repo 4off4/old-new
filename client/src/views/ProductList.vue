@@ -14,7 +14,7 @@
                 </div> -->
             </div> 
             <div class="row" v-if="this.productList.length > 0">
-                <div class="col-xl-3 col-lg-4 col-md-6" :key="i" v-for="(product,i) in productList">
+                <div class="col-xl-3 col-lg-4 col-md-6" style="margin-bottom:20px" :key="i" v-for="(product,i) in productList">
                     <div class="cards">
                         <a @click="goToDetail(product.id);" style="cursor:pointer">
                             <img :src="`/download/${product.id}/${product.path}/0`" class="img-fluid"/>
@@ -29,7 +29,7 @@
                             <button class="btn-sales" type="button" @click="goToCart(i,product.path)">
                                 <img src="https://cdn-icons-png.flaticon.com/512/833/833314.png">
                             </button>
-                            <button class="btn-sales" type="button" @click="goToOrderDetail()">
+                            <button class="btn-sales" type="button" @click="goToOrderDetail(i)">
                                 <img src="https://cdn-icons-png.flaticon.com/512/839/839860.png">
                             </button>
                             <small clss="text-dark" style="font-weight:bold;">{{getCurrencyFormat(product.product_price)}}$</small>
@@ -60,7 +60,6 @@ export default {
     methods: {
         async getProductList() {
            this.productList = await this.$api("/api/productList",{});
-           //console.log(this.productList);
         },
         goToDetail(id) {
             this.$router.push({path:'detail', query:{id:id}});
@@ -94,20 +93,27 @@ export default {
                 });
             }
         },
-        goToOrderDetail(){
+        goToOrderDetail(i){
             if(this.userEmail == undefined) {
                 alert("Please login to Kakao");
             }else{
-                this.$swal.fire({
-                    title: 'Would you like to buy it now?',
-                    showCancelButton: true,
-                    confirmButtonText: 'Yes',
-                    cancelButtonText: 'Cancel',
-                    }).then(async(result) => {
-                    if (result.isConfirmed) {
-                        this.$router.push({path:'/orderDetail'});
-                    }
-                });
+                //제품가격이 0이거나 null일때
+                if( this.productList[i].product_price == 0){
+                    return this.$swal("out of stock.");                
+                }
+                console.log(i);
+                this.$router.push({name:'orderDetail3', params:{productid:i}}); 
+                this.postOpen = false
+                // this.$swal.fire({
+                //     title: 'Would you like to buy it now?',
+                //     showCancelButton: true,
+                //     confirmButtonText: 'Yes',
+                //     cancelButtonText: 'Cancel',
+                //     }).then(async(result) => {
+                //     if (result.isConfirmed) {
+                //         this.$router.push({path:'/orderDetail'});
+                //     }
+                // });
             }
         },
         getCurrencyFormat(value) {

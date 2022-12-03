@@ -8,6 +8,12 @@
           {{productId}}
         </div>
       </div>
+      <div class="mb-3 row" style="display:none;">
+        <label class="col-md-3 col-form-label">max Image Id</label>
+        <div class="col-md-9">
+          {{this.imageMaxId}}
+        </div>
+      </div>      
       <div class="mb-3 row">
         <label class="col-md-3 col-form-label">Product Name</label>
         <div class="col-md-9">
@@ -80,9 +86,8 @@
                 </ul>
               </div>
             </div>
-          
+          </div>
         </div>
-      </div>
       <div class="mb-3 row m-auto">
         <button type="button" class="btn btn-lg btn-dark" @click="goToList">Confirm</button>
       </div>
@@ -132,14 +137,15 @@ export default {
     },
     async getProductImage() {
       this.productImage = await this.$api("/api/imageList",{param:[this.productId]});
-      console.log('this.productImage',this.productImage);
     },
     async getProductImageMaxId() {
       let imageListMaxId = await this.$api("/api/imageListMaxId",{});
-      this.imageMaxId = imageListMaxId[0].id;
+      this.imageMaxId = imageListMaxId[0].id+1;
+
       if(this.imageMaxId == 0){
         this.imageMaxId = 1;
       }
+      return this.imageMaxId;
     },
     deleteImage(id) {
       this.$swal.fire({
@@ -152,6 +158,7 @@ export default {
           await this.$api("/api/imageDelete",{param:[id]});
           this.getProductImage();
           this.$swal.fire('Cancle!', '', 'success');
+          this.getProductImageMaxId();
         }
       });
     },
@@ -165,15 +172,22 @@ export default {
       const { error } = await this.$api(`/upload/${this.productId}/${type}/${name}/${this.imageMaxId}`, { data });
       if (error) {
         return this.$swal("Image upload failed. Try again.");
+      }else{
+        this.$swal("Image Upload Complete");
       }
-
-      this.$swal("Image Upload Complete");
-
       setTimeout(() => {
         this.getProductImage();
+        this.getProductImageMaxId();
+        console.log("maxid : " +this.imageMaxId);
       }, 1000);
     }
-  }
+  },
+  watch: {
+    input1() { 
+        console.log(this.imageMaxId);
+    }
+  },
+
 }
 </script>
 <style>

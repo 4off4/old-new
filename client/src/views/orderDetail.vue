@@ -194,13 +194,16 @@ export default {
           deliveryCount: 0,
           totalCount: 0,
           addressForZipcode: "",
-          zonecode: ""
+          zonecode: "",
         };
     },
     created() {
         this.getCartList();
+        //orderDetail2
         this.addressForZipcode = this.$route.params.id;
         this.zonecode = this.$route.params.code;
+        //orderDetail3
+        this.productId = this.$route.params.productid;
     },
     methods: {
         async getCartList() {
@@ -212,6 +215,15 @@ export default {
               this.productId = this.userCartList[i].product_id;
           }
           this.totalCount = this.priceCount+this.deliveryCount;
+        },
+        async getProductDetail() {
+            let productDetail = await this.$api("/api/productDetail",{param:[this.productId]});
+            if(productDetail.length > 0) {
+                this.productDetail = productDetail[0];
+                console.log(this.productDetail);
+            }else{
+                alert('wrong path, Try again.');
+            }
         },
         goToOrderDetail(){
             this.$router.push({path:'/orderDetail'});

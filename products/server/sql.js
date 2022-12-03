@@ -11,7 +11,7 @@ module.exports = {
                     t_product t1, t_image t2, t_category t3
                 WHERE t1.id = t2.product_id 
                 AND	t2.type = 1
-                AND	t1.category_id = t3.id`
+                AND	t1.category_id = t3.id ORDER BY t1.id`
     },
     //제품판매 리스트2
     productList2 : {
