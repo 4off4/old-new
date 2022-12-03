@@ -8,10 +8,17 @@ import ProductUpdate from '../views/ProductUpdate.vue'
 import buyCart from '../views/buyCart.vue'
 import orderDetail from '../views/orderDetail.vue'
 import zipCode from '../views/zipCode.vue'
+import userOderDetail from '../views/userOderDetail.vue'
+import indexList from '../views/indexList.vue'
 const routes = [
   {
     path: '/',
     name: 'home',
+    component: indexList
+  },
+  {
+    path: '/list',
+    name: 'ProductList',
     component: ProductList
   },
   {
@@ -50,15 +57,36 @@ const routes = [
     component: orderDetail
   },
   {
+    path: '/orderDetail/:id/:code',
+    name: 'orderDetail2',
+    component: orderDetail
+  },
+  {
     path: '/zipCode',
     name: 'zipCode',
     component: zipCode
+  },
+  {
+    path: '/userOderDetail',
+    name: 'userOderDetail',
+    component: userOderDetail
   }
 ]
 
+// 함수 추가 전 기본
+// const router = createRouter({
+//   history: createWebHistory(process.env.BASE_URL),
+//   routes
+// })
+
+// 함수 추가 후
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
-})
+  routes,
+  // (화면 이동 시, 상단으로 이동)
+  scrollBehavior(){
+    return { top: 0 }
+  },
+});
 
 export default router

@@ -1,14 +1,15 @@
 <template>
     <body>
     <section class="cart">
-        <div class="cart__information">
+        <h2 class="text-center">Cart</h2><br/>
+        <div class="textBox" v-if="this.userCartList.length > 0">
             <ul>
-                <li>장바구니 상품은 최대 30일간 저장됩니다.</li>
-                <li>가격, 옵션 등 정보가 변경된 경우 주문이 불가할 수 있습니다.</li>
-                <li>오늘출발 상품은 판매자 설정 시점에 따라 오늘출발 여부가 변경될 수 있으니 주문 시 꼭 다시 확인해 주시기 바랍니다.</li>
+                <li>Shopping cart products are stored for up to 30 days.</li>
+                <li>If the information such as price, option, etc. has changed, you may not be able to order.</li>
+                <li>If you want to delete the product from your shopping cart, Please click the delete button.</li>
             </ul>
         </div>
-            <table class="cart__list">
+            <table class="cart__list" v-if="this.userCartList.length > 0">
                 <thead>
                     <tr>
                         <th></th>
@@ -24,72 +25,60 @@
                         <img v-if="userCart.path!=null" :src="`/download/${userCart.product_id}/${userCart.path}/0`" style="height:50px;width:auto;" />
                         </td>
                         <td>{{userCart.product_name}}</td>
-                        <td>{{userCart.product_price}}</td>
-                        <td>{{userCart.delivery_price}}</td>
+                        <td>{{getCurrencyFormat(userCart.product_price)}}</td>
+                        <td>{{getCurrencyFormat(userCart.delivery_price)}}</td>
                         
                         <td>
-                            <button type="button" class="btn btn-danger" @click="deleteProduct(userCart.product_id);">delete</button>
+                            <!-- <button type="button" class="btn btn-danger" @click="deleteProduct(userCart.product_id);">delete</button> -->
+                            <button class="btn-sales" type="button" @click="deleteProduct(userCart.product_id);">
+                                <img src="https://cdn-icons-png.flaticon.com/512/7945/7945112.png">
+                            </button>
                         </td>
                     </tr>
                 </tbody>
             </table>
+            <div class="dataBoxNull" v-else>
+                <ul>
+                    <li>No data</li>
+                    <li>Please fill up the shopping cart!</li>
+                </ul>
+            </div>
         <div class="cart__mainbtns">
             <button class="cart__bigorderbtn left" @click="goToHome()">Home</button> &nbsp;&nbsp;
-            <button class="cart__bigorderbtn right" @click="goToOrderDetail()">Order</button>
+            <button class="cart__bigorderbtn right" @click="goToOrderDetail()" v-if="this.userCartList.length > 0">Order</button>
         </div>
     </section>
 </body>
 </template>
 <style scoped>
     body {
-    margin: 0;
+        margin: 0;
     }
 
     * {
-    box-sizing: border-box;
+        box-sizing: border-box;
     }
 
     p,
     span {
-    margin: 0;
+        margin: 0;
     }
 
     a {
-    color: black;
+        color: black;
     }
 
     img {
-    display: block;
-    width: 80%;
-    height: 80px;
-    margin: auto;
+        display: block;
+        width: 80%;
+        height: 80px;
+        margin: auto;
     }
-
-    .cart {
-    width: 80%;
-    margin: auto;
-    padding: 30px;
-    }
-
-    .cart ul {
-    background-color: whitesmoke;
-    padding: 30px;
-    margin-bottom: 50px;
-    border: whitesmoke solid 1px;
-    border-radius: 5px;
-    font-size: 13px;
-    font-weight: 300;
-    }
-
-    .cart ul :first-child {
-    color: limegreen;
-    }
-
     table {
-    border-top: solid 1.5px black;
-    border-collapse: collapse;
-    width: 100%;
-    font-size: 14px;
+        border-top: solid 1.5px black;
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 14px;
     }
 
     thead {
@@ -183,25 +172,6 @@
     display: block;
     margin: auto;
     }
-
-    .cart__bigorderbtn {
-    width: 200px;
-    height: 50px;
-    font-size: 16px;
-    margin: auto;
-    border-radius: 5px;
-    }
-
-    .cart__bigorderbtn.left {
-    background-color: white;
-    border: 1px lightgray solid;
-    }
-
-    .cart__bigorderbtn.right {
-    background-color: limegreen;
-    color: white;
-    border: none;
-    }
 </style>
 <script>
 export default {
@@ -217,7 +187,7 @@ export default {
     methods: {
         async getCartList() {
           this.userCartList = await this.$api("/api/cartList",{param:[this.userEmail]});
-          console.log(this.userCartList);
+          console.log(this.userCartList.length);
         },
         deleteProduct(productId) {
             this.$swal.fire({
@@ -239,7 +209,10 @@ export default {
         },
         goToHome(){
             this.$router.push({path:'/'});
-        }
+        },
+        getCurrencyFormat(value) {
+            return this.$currencyFormat(value);
+        },
     }
 }
 </script>

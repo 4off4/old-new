@@ -1,6 +1,7 @@
 <template>
-    <main class="mt-3">
+    <main class="mt-4">
         <div class="container">
+            <h2 class="text-center">Product List</h2><br/>
             <div class="row mb-2">
                 <!-- SELECT 표시 삭제 -->
                 <!-- <div class="col-12">
@@ -12,9 +13,9 @@
                     </select>
                 </div> -->
             </div> 
-            <div class="row g-3">
+            <div class="row" v-if="this.productList.length > 0">
                 <div class="col-xl-3 col-lg-4 col-md-6" :key="i" v-for="(product,i) in productList">
-                    <div class="card" style="width: 18rem;">
+                    <div class="cards">
                         <a @click="goToDetail(product.id);" style="cursor:pointer">
                             <img :src="`/download/${product.id}/${product.path}/0`" class="img-fluid"/>
                         </a>
@@ -25,21 +26,26 @@
                                 <span class="badge bg-dark text-white me-1">{{product.category2}}</span>
                                 <span class="badge bg-dark text-white">{{product.category3}}</span>
                             </p>
-                            <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-sm btn-outline-secondary" @click="goToCart(i,product.path)">Cart</button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Buy</button>
-                            </div>
-                            <small clss="text-dark">{{product.product_price}}</small>
-                            </div>
+                            <button class="btn-sales" type="button" @click="goToCart(i,product.path)">
+                                <img src="https://cdn-icons-png.flaticon.com/512/833/833314.png">
+                            </button>
+                            <button class="btn-sales" type="button" @click="goToOrderDetail()">
+                                <img src="https://cdn-icons-png.flaticon.com/512/839/839860.png">
+                            </button>
+                            <small clss="text-dark" style="font-weight:bold;">{{getCurrencyFormat(product.product_price)}}$</small>
                         </div>
                     </div>         
                 </div>
             </div>
+            <div class="dataBoxNull" v-else>
+                <ul>
+                    <li>No data</li>
+                    <li>Please Registrate Products</li>
+                </ul>
+            </div>
         </div>
     </main>
 </template>
-
 <script>
 export default {
     data(){
@@ -60,30 +66,52 @@ export default {
             this.$router.push({path:'detail', query:{id:id}});
         },
         goToCart(i,path) {
-            console.log(i);
-            //제품가격이 0이거나 null일때
-            if( this.productList[i].product_price == 0){
-                return this.$swal("out of stock.");                
-            }
-            this.$swal.fire({
-                title: 'Would you like to add to cart?',
-                showCancelButton: true,
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'Cancel',
-                }).then(async(result) => {
-                if (result.isConfirmed) {
-                    let id = this.productList[i].id;
-                    let product_name = this.productList[i].product_name;
-                    let product_price = this.productList[i].product_price;
-                    let delivery_price = this.productList[i].delivery_price;
-                   // let add_delivery = this.productList[i].add_delivery;
-                    let buyer_id = this.userEmail;   //buyer_id는 로그인 한 사람의 이메일
-                    let category_id = this.productList[i].category_id;
-                    let tags = this.productList[i].tags;
-                    await this.$api("/api/cartInsert",{param:[id,product_name,product_price,delivery_price,buyer_id,category_id,tags,path]});
-                    this.$router.push({path:'/cart', query:{id:id}});   //장바구니로 이동
+            if(this.userEmail == undefined) {
+                alert("Please login to Kakao");
+            }else{
+                //제품가격이 0이거나 null일때
+                if( this.productList[i].product_price == 0){
+                    return this.$swal("out of stock.");                
                 }
-            });
+                this.$swal.fire({
+                    title: 'Would you like to add to cart?',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'Cancel',
+                    }).then(async(result) => {
+                    if (result.isConfirmed) {
+                        let id = this.productList[i].id;
+                        let product_name = this.productList[i].product_name;
+                        let product_price = this.productList[i].product_price;
+                        let delivery_price = this.productList[i].delivery_price;
+                    // let add_delivery = this.productList[i].add_delivery;
+                        let buyer_id = this.userEmail;   //buyer_id는 로그인 한 사람의 이메일
+                        let category_id = this.productList[i].category_id;
+                        let tags = this.productList[i].tags;
+                        await this.$api("/api/cartInsert",{param:[id,product_name,product_price,delivery_price,buyer_id,category_id,tags,path]});
+                        this.$router.push({path:'/cart', query:{id:id}});   //장바구니로 이동
+                    }
+                });
+            }
+        },
+        goToOrderDetail(){
+            if(this.userEmail == undefined) {
+                alert("Please login to Kakao");
+            }else{
+                this.$swal.fire({
+                    title: 'Would you like to buy it now?',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'Cancel',
+                    }).then(async(result) => {
+                    if (result.isConfirmed) {
+                        this.$router.push({path:'/orderDetail'});
+                    }
+                });
+            }
+        },
+        getCurrencyFormat(value) {
+            return this.$currencyFormat(value);
         }
     }
 }

@@ -1,11 +1,12 @@
 <template>
     <body>
     <section class="order">
-        <div class="">
+        <h2 class="text-center">Order List Detail</h2><br/>
+        <div class="textBox">
             <ul>
-                <li>장바구니 상품은 최대 30일간 저장됩니다.</li>
-                <li>가격, 옵션 등 정보가 변경된 경우 주문이 불가할 수 있습니다.</li>
-                <li>오늘출발 상품은 판매자 설정 시점에 따라 오늘출발 여부가 변경될 수 있으니 주문 시 꼭 다시 확인해 주시기 바랍니다.</li>
+                <li>This is the page before the payment.</li>
+                <li>Please check your zip code</li>
+                <li>Please check the product before ordering.</li>
             </ul>
         </div>
         <div class="orderHistory">
@@ -24,8 +25,8 @@
                         <td style="background-color: whitesmoke;">{{i+1}}</td>
                         <td><img v-if="userCart.path!=null" :src="`/download/${userCart.product_id}/${userCart.path}/0`" style="height:50px;width:auto;" /></td>
                         <td>{{userCart.product_name}}</td>
-                        <td>{{userCart.product_price}}</td>
-                        <td>{{userCart.delivery_price}}</td>
+                        <td>{{getCurrencyFormat(userCart.product_price)}}</td>
+                        <td>{{getCurrencyFormat(userCart.delivery_price)}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -36,25 +37,27 @@
                 <thead style="text-align: left;">
                     <tr>
                         <td class="orderTabetd">Name&nbsp;<span style="color:red">*</span></td>
-                        <td><input type="text" id="name1" size="5" maxlength="5" style="width:100px;"/></td>
+                        <td><input type="text" id="name1" size="5" maxlength="5" style="width:100px;" :value=this.userName disabled/></td>
                     </tr>
                     <tr>
                         <td class="orderTabetd">Address&nbsp;<span style="color:red">*</span></td>
                         <td>
-                            <input type="text" id="postnum1" size="10" maxlength="5" />&nbsp;&nbsp;
-                            <button type="button" class="btn btn-outline-dark">Zip code</button><br/>
+                            <input type="text" id="postnum1" size="10" maxlength="5" :value="this.zonecode" disabled/>&nbsp;&nbsp;
+                            <button type="button" class="btn btn-outline-dark" @click="goToZipCode()">Zip code</button><br/>
                             <!-- <button type="button" style="cursor:pointer; margin-bottom:10px; background-color:#fff">Zip code</button><br/> -->
-                            <input type="text" id="addr1" size="50" style="margin-bottom:10px;" /><br/>
-                            <input type="text" id="addr2" size="50" />
+                            <input type="text" id="addr1" size="50" style="margin-bottom:10px;" :value="this.addressForZipcode" @keyup.enter="this.$refs.add2.focus();"/><br/>
+                            <input type="text" id="addr2" size="50" ref="add2" @keyup.enter="this.$refs.num1.focus();"/>
                         </td>
                     </tr>
                     <tr>
                         <td class="orderTabetd">Phone Number&nbsp;<span style="color:red">*</span></td>
-                        <td><input type="text" size="3" style="width:100px;"/>-<input type="text" size="5" style="width:100px;"/>-<input type="text" size="5" style="width:100px;"/></td>
+                        <td><input type="text" size="3" maxlength="3" style="width:100px;" v-model="num1" ref="num1" @keyup.enter="this.$refs.num2.focus();"/>
+                        -<input type="text" size="5" maxlength="4" v-model="num2" style="width:100px;" ref="num2" @keyup.enter="this.$refs.num3.focus();"/>
+                        -<input type="text" size="5" maxlength="4" v-model="num3" style="width:100px;" ref="num3" @keyup.enter="this.$refs.message.focus();"/></td>
                     </tr>
                     <tr>
                         <td class="orderTabetd">Message</td>
-                        <td><textarea rows="3" cols="100" style="width:500px; height:100px"></textarea></td>
+                        <td><textarea rows="3" cols="100" style="width:500px; height:100px" v-model="note" ref="message" @keyup.enter="this.$refs.pay.focus();"></textarea></td>
                     </tr>
                 </thead>
             </table>
@@ -68,17 +71,17 @@
                     <th style="width:500px; padding:22px 0;">Total Pay</th>
                 </tr>
                 <tr style="background-color: #fff;">
-                    <td style="padding: 23px 0;"><span class="price">{{this.priceCount}}</span>$</td>
-                    <td><span class="price">{{this.deliveryCount}}</span>$</td>
-                    <td>= <span class="price">{{this.totalCount}}</span>$</td>
+                    <td style="padding: 23px 0;"><span class="price">{{getCurrencyFormat(this.priceCount)}}</span>$</td>
+                    <td><span class="price">{{getCurrencyFormat(this.deliveryCount)}}</span>$</td>
+                    <td>= <span class="price">{{getCurrencyFormat(this.totalCount)}}</span>$</td>
                 </tr>
             </table>
             <br/><br/>
         </div>
         <!-- 버튼 -->
         <div class="order__mainbtns">
-            <button class="order__bigorderbtn left" @click="goToCart()">Cancel</button> &nbsp;&nbsp;
-            <button class="order__bigorderbtn right" @click="goToOrderDetail()">Pay</button>
+            <button class="order__bigorderbtn left" @click="$router.go(-1)">Cancel</button> &nbsp;&nbsp;
+            <button class="cart__bigorderbtn right" @click="goToOrderList()" ref="pay">Pay</button><br/><br/>
         </div>
     </section>
 </body>
@@ -112,20 +115,6 @@
         width: 80%;
         margin: auto;
         padding: 30px;
-    }
-
-    .order ul {
-        background-color: whitesmoke;
-        padding: 30px;
-        margin-bottom: 50px;
-        border: whitesmoke solid 1px;
-        border-radius: 5px;
-        font-size: 13px;
-        font-weight: 300;
-    }
-
-    .order ul :first-child {
-        color: limegreen;
     }
 
     /* 장바구니 리스트 */
@@ -181,40 +170,6 @@
         color: white;
         border: none;
     }
-    /* 배송정보 */
-    .orderTable {
-        border: solid 1px gray;
-        border-collapse: collapse;
-        width: 100%;
-        font-size: 12pt;
-    }
-    table.orderTable th, td { border: solid 1px #e0e0eb; padding: 12px 10px;}
-    .orderTabetd {font-size: 12pt; background-color: whitesmoke;}
-    .orderTable input, textarea {
-        width: 300px;
-        height: 30px;
-        font-size: 13px;
-        border: 0;
-        border-radius: 15px;
-        outline: none;
-        padding-left: 10px;
-        background-color: rgb(233, 233, 233);
-    }
-
-    /* 주문 금액 */
-    table.calc {
-        border: solid 1px #e0e0eb;
-        border-collapse: collapse;
-        background-color: #f5f5f0;
-        width: 100%;
-        font-size: 10pt;
-    }
-    table.calc th {
-        border: solod 1px #e0e0eb;
-    }
-    table.calc td {
-        border: solid 1px #e0e0eb;
-    }
 
 </style>
 <script>
@@ -222,14 +177,30 @@ export default {
     data(){
         return {
           userCartList: [],
+          orderInsert: {
+            product_id: 0,
+            buyer_id: "",
+            name: "",
+            total_price: 0,
+            address : "",
+            postcode : 0,
+            phone : "",
+            message : ""
+          },
           userEmail : this.$store.state.user.email,
+          userName : this.$store.state.user.profile.nickname,
+          productId : "",
           priceCount: 0,
           deliveryCount: 0,
-          totalCount: 0
+          totalCount: 0,
+          addressForZipcode: "",
+          zonecode: ""
         };
     },
     created() {
         this.getCartList();
+        this.addressForZipcode = this.$route.params.id;
+        this.zonecode = this.$route.params.code;
     },
     methods: {
         async getCartList() {
@@ -238,6 +209,7 @@ export default {
           for(let i=0; i<this.userCartList.length; i++) {
               this.priceCount += this.userCartList[i].product_price;
               this.deliveryCount += this.userCartList[i].delivery_price;
+              this.productId = this.userCartList[i].product_id;
           }
           this.totalCount = this.priceCount+this.deliveryCount;
         },
@@ -246,7 +218,38 @@ export default {
         },
         goToCart(){
             this.$router.push({path:'/cart'});
-        }
+        },
+        goToZipCode(){
+            this.$router.push({path:'/zipCode'});
+        },
+        goToOrderList() {
+            console.log('goToOrderList 입장!');
+            this.$swal.fire({
+                title: 'Would you like to buy it?',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'Cancel',
+                }).then(async(result) => {
+                if (result.isConfirmed) {
+                    // this.orderInsert.product_id = this.productId;
+                    // this.orderInsert.buyer_id = this.userEmail;
+                    // this.orderInsert.name = this.userName;
+                    // this.orderInsert.total_price = this.totalCount;
+                    // this.orderInsert.address = this.addressForZipcode;
+                    // this.orderInsert.postcode = this.zonecode;
+                    // this.orderInsert.phone = this.num1 + this.num2 + this.num3;
+                    // this.orderInsert.message = this.note;
+                    // console.log(this.orderInsert);
+                    await this.$api("/api/orderInsert",{param:[this.orderInsert]});
+                    this.$api("/api/cartDelete",{param:[this.orderInsert.product_id,this.userEmail]});
+                    this.$swal.fire('Save Success!', '', 'success');
+                    this.$router.push({path:'/userOderDetail'});
+                }
+            });
+        },
+        getCurrencyFormat(value) {
+            return this.$currencyFormat(value);
+        },
     }
 }
 </script>

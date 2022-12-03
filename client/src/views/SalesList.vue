@@ -1,10 +1,11 @@
 <template>
-    <main class="mt-3">
+    <main class="mt-4">
         <div class="container">
+            <h2 class="text-center">Product Registration</h2>
             <div class="float-end mb-3">
                 <button type="button" class="btn btn-dark" @click="goToInsert">upload</button>
             </div>
-            <table class="table table-bordered">
+            <table class="table table-bordered" v-if="this.productList.length > 0">
                 <thead>
                     <tr>
                         <th></th>
@@ -18,21 +19,35 @@
                 <tbody>
                     <tr :key="i" v-for="(product, i) in productList">
                         <td>
-                        <img v-if="product.path!=null" :src="`/download/${product.id}/${product.path}/0`" style="height:50px;width:auto;" />
+                            <img v-if="product.path!=null" :src="`/download/${product.id}/${product.path}/0`" style="height:50px;width:auto;" />
                         </td>
                         <td>{{product.product_name}}</td>
-                        <td>{{product.product_price}}</td>
-                        <td>{{product.delivery_price}}</td>
-                        <td>{{product.add_delivery}}</td>
-                        
+                        <td>{{getCurrencyFormat(product.product_price)}}</td>
+                        <td>{{getCurrencyFormat(product.delivery_price)}}</td>
+                        <td>{{getCurrencyFormat(product.add_delivery)}}</td>
                         <td>
-                            <button type="button" class="btn btn-info me-1" @click="goToImageInsert(product.id);">img save</button>
+                            <button class="btn-sales" type="button" @click="goToImageInsert(product.id);">
+                                <img src="https://cdn-icons-png.flaticon.com/512/5752/5752574.png">
+                            </button>
+                            <button class="btn-sales" type="button" @click="goToUpdate(product.id);">
+                                <img src="https://cdn-icons-png.flaticon.com/512/1159/1159633.png">
+                            </button>
+                            <button class="btn-sales" type="button" @click="deleteProduct(product.id);">
+                                <img src="https://cdn-icons-png.flaticon.com/512/7945/7945112.png">
+                            </button>                                                       
+                            <!-- <button type="button" class="btn btn-info me-1" @click="goToImageInsert(product.id);">img save</button>
                             <button type="button" class="btn btn-warning me-1" @click="goToUpdate(product.id);">update</button>
-                            <button type="button" class="btn btn-danger" @click="deleteProduct(product.id);">delete</button>
+                            <button type="button" class="btn btn-danger" @click="deleteProduct(product.id);">delete</button> -->
                         </td>
                     </tr>
                 </tbody>
             </table>
+            <div class="dataBoxNull" v-else>
+                <ul>
+                    <li>No data</li>
+                    <li>Please Registrate Products</li>
+                </ul>
+            </div>
         </div>
     </main>
 </template>
@@ -56,6 +71,11 @@ export default {
         },
         goToUpdate(id) {
             this.$router.push({path:'/update', query:{id:id}});
+            // if(this.productList.path != null) {
+            //     this.$router.push({path:'/update', query:{id:id}});
+            // }else {
+            //     this.$swal.fire('Please Update Image First', '', 'error');
+            // }
         },
         goToDetail(id) {
             this.$router.push({path:'/detail', query:{id:id}});
@@ -77,6 +97,9 @@ export default {
                     this.$swal.fire('Delete!', '', 'success')
                 }
             });
+        },
+        getCurrencyFormat(value) {
+            return this.$currencyFormat(value);
         }
     }
 }
