@@ -22,10 +22,10 @@ It is connected to my local DB. If you use it, you can connect to your own DB.
 
 ## Initial screen
 ![Old&New](/main.png)
-(/productList.png)
-(/productSelect.png)
-(/cart.png)
-(/buy.png)
+![Old&New](/productList.png)
+![Old&New](/productSelect.png)
+![Old&New](/cart.png)
+![Old&New](/buy.png)
 
 ## URL YouTube
 [✨Old&New](https://youtu.be/3bl253xIUFE)
