@@ -6,11 +6,11 @@
 <h5>안녕하세요.<br>한사대 졸업작품 Old&New 입니다.</h5>
 </p>
 
-## terminal Install
+## Install
 npm install express --save
 npm bootstrap --save
 
-## terminal On
+## terminal
 server $ node app.js
 client $ npm run serve
 
@@ -21,7 +21,11 @@ It is connected to my local DB. If you use it, you can connect to your own DB.
 
 
 ## Initial screen
-![Old&New]()
+![Old&New](/main.png)
+(/productList.png)
+(/productSelect.png)
+(/cart.png)
+(/buy.png)
 
-## URL
-[✨Old&New]()
+## URL YouTube
+[✨Old&New](https://youtu.be/3bl253xIUFE)
