@@ -1,22 +1,23 @@
 <template>
   <main class="mt-4">
     <div class="container">
-      <h2 class="text-center">Image Upload</h2>
+      <div class="inner">
+      <h2 class="text-center">Image Upload</h2><br/>
       <div class="mb-3 row">
         <label class="col-md-3 col-form-label">Product ID</label>
-        <div class="col-md-9">
+        <div class="col-md-3">
           {{productId}}
         </div>
       </div>
       <div class="mb-3 row" style="display:none;">
         <label class="col-md-3 col-form-label">max Image Id</label>
-        <div class="col-md-9">
+        <div class="col-md-3">
           {{this.imageMaxId}}
         </div>
       </div>      
       <div class="mb-3 row">
         <label class="col-md-3 col-form-label">Product Name</label>
-        <div class="col-md-9">
+        <div class="col-md-3">
           {{productDetail.product_name}}
         </div>
       </div>
@@ -32,8 +33,8 @@
             </div>
           </div>
           <br/>
-          <input type="file" class="form-control" accept="image/png,image/jpeg" @change="uploadFile($event.target.files, 1)">
-          <div class="alert" role="alert" style="background-color: #F2F8F8;">
+          <input type="file" class="form-control" accept="image/png,image/jpeg" @change="uploadFile($event.target.files, 1)" style="width:400px;">
+          <div class="alert" role="alert" style="background-color: #fff; width:400px;">
             <ul>
               <li>Image ize : 350*350</li>
               <li>File Size : 1M or less</li>
@@ -54,8 +55,8 @@
             </div>
           </div>
           <br/>
-          <input type="file" class="form-control" accept="image/png,image/jpeg"  @change="uploadFile($event.target.files, 2)">
-          <div class="alert" role="alert" style="background-color: #F2F8F8;">
+          <input type="file" class="form-control" accept="image/png,image/jpeg"  @change="uploadFile($event.target.files, 2)" style="width:400px;">
+          <div class="alert" role="alert" style="background-color: #fff; width:400px;">
             <ul>
               <!-- <li>Max 5 Img</li> -->
               <li>Image ize : 350*350</li>
@@ -78,8 +79,8 @@
           </div>
           <br/>
           <div class="col-lg-6 col-md-8">
-            <input type="file" class="form-control" accept="image/png,image/jpeg" @change="uploadFile($event.target.files, 3)">
-              <div class="alert" role="alert" style="background-color: #F2F8F8;">
+            <input type="file" class="form-control" accept="image/png,image/jpeg" @change="uploadFile($event.target.files, 3)" style="width:400px;">
+              <div class="alert" role="alert" style="background-color: #fff; width:400px;">
                 <ul>
                   <li>File Size : 5M or less</li>
                   <li>File extension : png, jpg</li>
@@ -88,9 +89,10 @@
             </div>
           </div>
         </div>
-      <div class="mb-3 row m-auto">
-        <button type="button" class="btn btn-lg btn-dark" @click="goToList">Confirm</button>
+      <div class="textButton">
+        <button type="button" class="btn btn-lg btn-dark" @click="goToList" style="width:600px;">Confirm</button>
       </div>
+    </div>
     </div>
   </main>
 </template>
@@ -191,6 +193,13 @@ export default {
 }
 </script>
 <style>
+.container {
+    /*display flex 붙어다녀요 - 안에 내용물을 가운데 정렬*/
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 .alert ul li{
   list-style: none;
   list-style-type: none;

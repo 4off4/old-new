@@ -1,6 +1,7 @@
 <template>
     <main class="mt-3">
-      <div class="container">
+        <div class="container">
+        <div class="inner">
           <h2 class="text-center">Register Product</h2><br/>
           <div class="productCreatInput">
             <div class="mb-3 row">
@@ -64,8 +65,9 @@
                     <button type="button" class="btn btn-outline-success" @click="productInsert" ref="save" style="width:230px;">Save</button>
                 </div>
             </div>
-          </div>                                                    
-      </div>
+          </div> 
+        </div>
+        </div>
   </main>
 </template>
 <script>

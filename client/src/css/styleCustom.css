@@ -154,3 +154,23 @@ table.calc td {
     color: #989898;
     border: none;
 }
+/* 상품등록/수정/이미지등록 화면 */
+.inner {
+    background-color:	#E8F5FF;
+    padding: 20px;
+    border-radius: 30px;
+}
+/* 판매상품리스트 화면 */
+.inner2 {
+    background-color:	#fff;
+    padding: 20px;
+    border-radius: 30px;
+    border: 3px solid 	#DCEBFF;
+}
+
+/* 모바일 웹앱 적용 */
+@media (max-width: 600px) {
+    main {
+
+    }
+}

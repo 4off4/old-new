@@ -3,9 +3,18 @@
 </template>
 <script>
 import { VueDaumPostcode } from 'vue-daum-postcode'
+
 export default {
+    data(){
+        return {
+          productId: 0
+        };
+    },
+    created() {
+        this.productId = this.$route.params.id;
+    },
     components: {
-        VueDaumPostcode, // export VueDaumPostcode is component
+        VueDaumPostcode,
     },
     methods: {
         oncomplete:function(result){
@@ -15,9 +24,9 @@ export default {
         }else{  // 지번 주소 선택
             this.address = result.jibunAddress;
         }
-        console.log('adress : ' + this.address);
         //orderDetail 함수 호출해서 return값 보내기 
-        this.$router.push({name:'orderDetail2', params:{id:this.address,code:this.zonecode}});   //장바구니로 이동
+        console.log("id: " + this.productId);
+        this.$router.push({name:'orderDetailFromZipcode', params:{id:this.address,code:this.zonecode,productid:this.productId}});   //장바구니로 이동
         this.postOpen = false
         }  
     }

@@ -1,66 +1,68 @@
 <template>
     <main class="mt-4">
         <div class="container">
-            <h2 class="text-center">Update Product</h2><br/>
-            <div class="productCreatInput">
-                <div class="mb-3 row">
-                    <label class="col-md-3 col-form-label">Product Name</label>
-                    <div class="col-md-9">
-                        <input type="text" class="form-control" v-model="productDetail.product_name" disabled>
-                    </div>
-                </div>
-                <div class="mb-3 row">
-                    <label class="col-md-3 col-form-label">Price</label>
-                    <div class="col-md-9">
-                        <input type="number" class="form-control" v-model="productDetail.product_price" @keyup.enter="this.$refs.ship.focus();">
-                    </div>
-                </div>    
-                <div class="mb-3 row">
-                    <label class="col-md-3 col-form-label">Shipping Charge</label>
-                    <div class="col-md-9">
-                        <input type="number" class="form-control" v-model="productDetail.delivery_price" ref="ship" @keyup.enter="this.$refs.addi.focus();">
-                    </div>
-                </div>        
-                <div class="mb-3 row">
-                    <label class="col-md-3 col-form-label">Additional Shipping Charge</label>
-                    <div class="col-md-9">
-                        <input type="number" class="form-control" v-model="productDetail.add_delivery" ref="addi" @keyup.enter="this.$refs.tag.focus();">
-                    </div>
-                </div>     
-                <!-- <div class="mb-3 row">
-                    <label class="col-md-3 col-form-label">Category</label>
-                    <div class="col-md-9">
-                        <div class="row">
-                            <div class="col-auto">
-                                <select class="form-select">
-                                    <option>Electronics</option>
-                                </select>
-                            </div>
-                            <div class="col-auto">
-                                <select class="form-select">
-                                    <option>Apple</option>
-                                </select>
-                            </div>
-                            <div class="col-auto">
-                                <select class="form-select">
-                                    <option>Acc</option>
-                                </select>
-                            </div>                               
+            <div class="inner">
+                <h2 class="text-center">Update Product</h2><br/>
+                <div class="productCreatInput">
+                    <div class="mb-3 row">
+                        <label class="col-md-3 col-form-label">Product Name</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" v-model="productDetail.product_name" disabled>
                         </div>
                     </div>
-                </div>  -->
-                <div class="mb-3 row">
-                    <label class="col-md-3 col-form-label">Tag</label>
-                    <div class="col-md-9">
-                        <input type="text" class="form-control" v-model="productDetail.tags" ref="tag" @keyup.enter="this.$refs.save.focus();">
-                    </div>
-                </div>  
-                <div class="cart__mainbtns">
-                    <button type="button" class="cart__bigorderbtn left" @click="$router.go(-1)">Cancel</button> &nbsp;&nbsp;
+                    <div class="mb-3 row">
+                        <label class="col-md-3 col-form-label">Price</label>
+                        <div class="col-md-9">
+                            <input type="number" class="form-control" v-model="productDetail.product_price" @keyup.enter="this.$refs.ship.focus();">
+                        </div>
+                    </div>    
+                    <div class="mb-3 row">
+                        <label class="col-md-3 col-form-label">Shipping Charge</label>
+                        <div class="col-md-9">
+                            <input type="number" class="form-control" v-model="productDetail.delivery_price" ref="ship" @keyup.enter="this.$refs.addi.focus();">
+                        </div>
+                    </div>        
+                    <div class="mb-3 row">
+                        <label class="col-md-3 col-form-label">Additional Shipping Charge</label>
+                        <div class="col-md-9">
+                            <input type="number" class="form-control" v-model="productDetail.add_delivery" ref="addi" @keyup.enter="this.$refs.tag.focus();">
+                        </div>
+                    </div>     
+                    <!-- <div class="mb-3 row">
+                        <label class="col-md-3 col-form-label">Category</label>
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-auto">
+                                    <select class="form-select">
+                                        <option>Electronics</option>
+                                    </select>
+                                </div>
+                                <div class="col-auto">
+                                    <select class="form-select">
+                                        <option>Apple</option>
+                                    </select>
+                                </div>
+                                <div class="col-auto">
+                                    <select class="form-select">
+                                        <option>Acc</option>
+                                    </select>
+                                </div>                               
+                            </div>
+                        </div>
+                    </div>  -->
+                    <div class="mb-3 row">
+                        <label class="col-md-3 col-form-label">Tag</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" v-model="productDetail.tags" ref="tag" @keyup.enter="this.$refs.save.focus();">
+                        </div>
+                    </div>  
+                    <div class="cart__mainbtns">
+                        <button type="button" class="cart__bigorderbtn left" @click="$router.go(-1)">Cancel</button> &nbsp;&nbsp;
 
-                    <button type="button" class="cart__bigorderbtn right" ref="save" @click="productUpdate">Save</button>
-                </div>   
-            </div>                                                   
+                        <button type="button" class="cart__bigorderbtn right" ref="save" @click="productUpdate">Save</button>
+                    </div>   
+                </div> 
+            </div>                                                  
         </div>
   </main>
 </template>

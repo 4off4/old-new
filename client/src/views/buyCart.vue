@@ -187,7 +187,6 @@ export default {
     methods: {
         async getCartList() {
           this.userCartList = await this.$api("/api/cartList",{param:[this.userEmail]});
-          console.log(this.userCartList.length);
         },
         deleteProduct(productId) {
             this.$swal.fire({
@@ -205,7 +204,19 @@ export default {
             });
         },
         goToOrderDetail(){
-            this.$router.push({path:'/orderDetail'});
+            this.$swal.fire({
+                title: 'Would you like to buy it now?',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'Cancel',
+                }).then(async(result) => {
+                if (result.isConfirmed) {
+                    for(let i = 0; i < this.userCartList.length; i++){
+                        let productId = this.userCartList[i].product_id;
+                        this.$router.push({name:'orderDetail', params:{productid:productId}}); 
+                    }
+                }
+            });
         },
         goToHome(){
             this.$router.push({path:'/'});

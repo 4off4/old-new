@@ -29,7 +29,7 @@
                             <button class="btn-sales" type="button" @click="goToCart(i,product.path)">
                                 <img src="https://cdn-icons-png.flaticon.com/512/833/833314.png">
                             </button>
-                            <button class="btn-sales" type="button" @click="goToOrderDetail(i)">
+                            <button class="btn-sales" type="button" @click="goToOrderDetail(product.id)">
                                 <img src="https://cdn-icons-png.flaticon.com/512/839/839860.png">
                             </button>
                             <small clss="text-dark" style="font-weight:bold;">{{getCurrencyFormat(product.product_price)}}$</small>
@@ -97,23 +97,16 @@ export default {
             if(this.userEmail == undefined) {
                 alert("Please login to Kakao");
             }else{
-                //제품가격이 0이거나 null일때
-                if( this.productList[i].product_price == 0){
-                    return this.$swal("out of stock.");                
-                }
-                console.log(i);
-                this.$router.push({name:'orderDetail3', params:{productid:i}}); 
-                this.postOpen = false
-                // this.$swal.fire({
-                //     title: 'Would you like to buy it now?',
-                //     showCancelButton: true,
-                //     confirmButtonText: 'Yes',
-                //     cancelButtonText: 'Cancel',
-                //     }).then(async(result) => {
-                //     if (result.isConfirmed) {
-                //         this.$router.push({path:'/orderDetail'});
-                //     }
-                // });
+                this.$swal.fire({
+                    title: 'Would you like to buy it now?',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes',
+                    cancelButtonText: 'Cancel',
+                    }).then(async(result) => {
+                    if (result.isConfirmed) {
+                        this.$router.push({name:'orderDetailTobuyNow', params:{productid:i}}); 
+                    }
+                });
             }
         },
         getCurrencyFormat(value) {

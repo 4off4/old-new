@@ -12,7 +12,7 @@
                         </div>
                         <div class="carousel-inner">
                             <div :class="`carousel-item ${i==0?'active':''}`" :key="i" v-for="(pimg, i) in productImage">
-                                <img :src="`/download/${this.id}/${pimg.path}/0`" class="d-block w-100" alt="...">
+                                <img :src="`/download/${this.id}/${pimg.path}/0`" class="d-block w-100" alt="..." >
                             </div>
                         </div>
                         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -63,13 +63,12 @@
                             </div> 
                             <div class="cart__mainbtns">
                                 <button class="cart__bigorderbtn left" @click="goTobuyCart()">Cart</button> &nbsp;&nbsp;
-                                <button class="cart__bigorderbtn right" @click="goToOrderDetail()">Buy</button>
+                                <button class="cart__bigorderbtn right" @click="goToOrderDetail(productDetail.id)">Buy</button>
                             </div>
                         </div>
                     </div>                     
                 </div>
             </div>
-            <br/>
             <div class="row">
                 <div class="col-12">
                      <img :src="`/download/${productDetail.id}/${productDetail.path}/0`" class="img-fluid"/><!-- <img :src="productDetail.path" class="img-fluid"/>  -->
@@ -118,9 +117,6 @@ export default {
           if(productDetail.length > 0){
             this.productDetail = productDetail[0];
             this.totalPrice = this.productDetail.product_price * this.total;
-            // if(this.productDetail.delivery_price == 0){
-            //   this.productDetail.delivery_price = 'free';
-            // }
           }
       },
       async getProductImage() {
@@ -152,7 +148,7 @@ export default {
                 });
             }
         },
-        goToOrderDetail(){
+        goToOrderDetail(i){
             if(this.userEmail == undefined) {
                 alert("Please login to Kakao");
             }else{
@@ -163,7 +159,7 @@ export default {
                     cancelButtonText: 'Cancel',
                     }).then(async(result) => {
                     if (result.isConfirmed) {
-                        this.$router.push({path:'/orderDetail'});
+                        this.$router.push({name:'orderDetailTobuyNow', params:{productid:i}}); 
                     }
                 });
             }

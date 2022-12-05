@@ -8,8 +8,10 @@ import ProductUpdate from '../views/ProductUpdate.vue'
 import buyCart from '../views/buyCart.vue'
 import orderDetail from '../views/orderDetail.vue'
 import zipCode from '../views/zipCode.vue'
+import zipCode2 from '../views/zipCode2.vue'
 import userOderDetail from '../views/userOderDetail.vue'
 import indexList from '../views/indexList.vue'
+import orderDetailTobuy from '../views/orderDetailTobuy.vue'
 const routes = [
   {
     path: '/',
@@ -62,15 +64,25 @@ const routes = [
     component: orderDetail
   },
   {
-    path: '/orderDetail/:productid',
-    name: 'orderDetail3',
-    component: orderDetail
+    path: '/orderDetailTobuyNow/:productid',
+    name: 'orderDetailTobuyNow',
+    component: orderDetailTobuy
   },  
+  {
+    path: '/orderDetail/:id/:code/:productid',
+    name: 'orderDetailFromZipcode',
+    component: orderDetailTobuy
+  },    
   {
     path: '/zipCode',
     name: 'zipCode',
     component: zipCode
   },
+  {
+    path: '/zipCode/:id',
+    name: 'zipCodeFromOrderDatailTobuy',
+    component: zipCode2
+  },  
   {
     path: '/userOderDetail',
     name: 'userOderDetail',
