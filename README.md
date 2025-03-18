@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-<h3>안녕하세요.<br>한사대 졸업작품 Old&New 입니다.</h3>
+<h3>안녕하세요.<br> Old&New 입니다.</h3>
 </p>
 
 ## Install
